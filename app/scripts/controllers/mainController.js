@@ -214,6 +214,19 @@ angular.module('ethExplorer')
 
     });
 
+
+function transformer(FORMAT, value, onZero, digitsNumber=3){
+
+  for(let i = 0; i < FORMAT.length; i++){
+    format = FORMAT[i];
+    if(value > format.val) {
+      var n = value / format.val;
+      return n.toFixed(digitsNumber) + format.id;
+    }
+  }
+  return 0 + onZero;
+}
+
 angular.module('filters', []).
   filter('truncate', function () {
     return function (text, length, end) {
@@ -233,8 +246,15 @@ angular.module('filters', []).
   filter('diffFormat', function () {
     return function (diffi) {
       if (isNaN(diffi)) return diffi;
-      var n = diffi / 1000000000000;
-      return n.toFixed(3) + " T";
+      const FORMAT = [
+        {val: 1000000000000000, id: " P"},
+        {val: 1000000000000, id: " T"},
+        {val: 1000000000, id: " G"},
+        {val: 1000000, id: " M"},
+        {val: 1000, id: " K"},
+        {val: 1, id: " "},
+      ];
+      return transformer(FORMAT, diffi, " ");
     };
   }).
   filter('stylize', function () {
@@ -255,7 +275,15 @@ angular.module('filters', []).
     return function (hashr) {
       if (isNaN(hashr)) return hashr;
       var n = hashr / 1000000000000;
-      return n.toFixed(3) + " TH/s";
+      const FORMAT = [
+        {val: 1000000000000000, id: " PH/s"},
+        {val: 1000000000000, id: " TH/s"},
+        {val: 1000000000, id: " GH/s"},
+        {val: 1000000, id: " MH/s"},
+        {val: 1000, id: " KH/s"},
+        {val: 1, id: " H/s"},
+      ];
+      return transformer(FORMAT, hashr, " H/s");
     };
   }).
   filter('gasFormat', function () {
@@ -276,7 +304,10 @@ angular.module('filters', []).
   filter('sizeFormat', function () {
     return function (size) {
       if (isNaN(size)) return size;
-      var s = size / 1000;
-      return s.toFixed(3) + " kB";
+      const FORMAT = [
+        {val: 1024, id: " kB"},
+        {val: 1, id: " B"},
+      ];
+      return transformer(FORMAT, size, " B");
     };
   });
