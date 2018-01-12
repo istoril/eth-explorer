@@ -75,9 +75,9 @@ angular.module('ethExplorer')
 
         function updateStats() {
           $scope.blockNum = web3.eth.blockNumber; // now that was easy
-
+          
           if($scope.blockNum!==undefined){
-
+            const block1 = web3.eth.getBlock(1);
             // TODO: put the 2 web3.eth.getBlock into the async function below
             //       easiest to first do with fastInfosCtrl
               var blockNewest = web3.eth.getBlock($scope.blockNum);
@@ -105,53 +105,52 @@ angular.module('ethExplorer')
                 $scope.gasLimit = new BigNumber(blockNewest.gasLimit).toFormat(0) + " m/s";
 
                 // Time
-                  var newDate = new Date();
-                  newDate.setTime(blockNewest.timestamp*1000);
-                  $scope.time = newDate.toUTCString();
+                var newDate = new Date();
+                newDate.setTime(blockNewest.timestamp*1000);
+                $scope.time = newDate.toUTCString();
 
-                  $scope.secondsSinceBlock1 = blockNewest.timestamp - 1438226773;
-                  $scope.daysSinceBlock1 = ($scope.secondsSinceBlock1 / 86400).toFixed(2);
+                $scope.secondsSinceBlock1 = blockNewest.timestamp - block1.timestamp;
+                $scope.daysSinceBlock1 = ($scope.secondsSinceBlock1 / 86400).toFixed(2);
 
-                  // Average Block Times:
-                  // TODO: make fully async, put below into 'fastInfosCtrl'
+                // Average Block Times:
+                // TODO: make fully async, put below into 'fastInfosCtrl'
 
-                  var blockBefore = web3.eth.getBlock($scope.blockNum - 1);
-                  if(blockBefore!==undefined){
-                  $scope.blocktime = blockNewest.timestamp - blockBefore.timestamp;
-                  }
-                  $scope.range1=100;
-                  range = $scope.range1;
-                  var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,0));
-                  if(blockBefore!==undefined){
-                  $scope.blocktimeAverage1 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
-                  }
-                  $scope.range2=1000;
-                  range = $scope.range2;
-                  var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,0));
-                  if(blockBefore!==undefined){
-                  $scope.blocktimeAverage2 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
-                  }
-                  $scope.range3=10000;
-                  range = $scope.range3;
-                  var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,0));
-                  if(blockBefore!==undefined){
-                  $scope.blocktimeAverage3 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
-                  }
-                  $scope.range4=100000;
-                  range = $scope.range4;
-                  var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,0));
-                  if(blockBefore!==undefined){
-                  $scope.blocktimeAverage4 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
-                  }
+                var blockBefore = web3.eth.getBlock($scope.blockNum - 1);
+                if(blockBefore!==undefined){
+                $scope.blocktime = blockNewest.timestamp - blockBefore.timestamp;
+                }
+                $scope.range1=100;
+                range = $scope.range1;
+                var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,1));
+                if(blockBefore!==undefined){
+                $scope.blocktimeAverage1 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
+                }
+                $scope.range2=1000;
+                range = $scope.range2;
+                var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,1));
+                if(blockBefore!==undefined){
+                $scope.blocktimeAverage2 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
+                }
+                $scope.range3=10000;
+                range = $scope.range3;
+                var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,1));
+                if(blockBefore!==undefined){
+                $scope.blocktimeAverage3 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
+                }
+                $scope.range4=100000;
+                range = $scope.range4;
+                var blockPast = web3.eth.getBlock(Math.max($scope.blockNum - range,1));
+                if(blockBefore!==undefined){
+                $scope.blocktimeAverage4 = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
+                }
 
-                  range = $scope.blockNum;
-                  var blockPast = web3.eth.getBlock(1);
-                  if(blockBefore!==undefined){
-                  $scope.blocktimeAverageAll = ((blockNewest.timestamp - blockPast.timestamp)/range).toFixed(2);
-                  }
+                range = $scope.blockNum;
+                if(blockBefore!==undefined){
+                $scope.blocktimeAverageAll = ((blockNewest.timestamp - block1.timestamp)/range).toFixed(2);
+                }
 
-                  //fastAnswers($scope);
-                  //$scope=BlockExplorerConstants($scope);
+                //fastAnswers($scope);
+                //$scope=BlockExplorerConstants($scope);
 
               }
           }
