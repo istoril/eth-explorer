@@ -17,7 +17,7 @@
     <div class="col-md-2" align="center"><div class="boxi">Gas Limit:<br />{{ gasLimit }}</div></div>
     <div class="col-md-2" align="center"><div class="boxi">Block Time:<br />{{ blocktime }} second(s)</div></div>
     <div class="col-md-2" align="center"><div class="boxi">Current Diff:<br />{{ difficulty | diffFormat }}</div></div>
-    <div class="col-md-2" align="center"><div class="boxi">Hashrate:<br />{{ hashrate || "Loading" | hashFormat }}</div></div>
+    <div class="col-md-2" align="center"><div class="boxi">Hashrate:<br />{{ hashrate | hashFormat }}</div></div>
   </div>
   <h1><i class="fa fa-cubes"></i> Recent Blocks <small>Most Recent Blocks in the Ethereum Network</small></h1><br />
   <div class="table-responsive">

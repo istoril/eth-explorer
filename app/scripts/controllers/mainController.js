@@ -166,12 +166,17 @@ angular.module('ethExplorer')
             }
         }
 
-
+        /* Formula taken from this repo. Estimates the actual network
+         * hash-rate 
+         * https://github.com/badmofo/ethereum-mining-calculator/tree/90f4e5aae595a6877f1a26b43c15a7db35149a22
+         */
         function getHashrate() {
-            $.getJSON("https://etherchain.org/api/miningEstimator", function(json) {
-                var hr = json.data[0].hashRate;
-                $scope.hashrate = hr;
-            });
+            if ($scope.blockNum !== undefined) {
+                const blockNewest = web3.eth.getBlock($scope.blockNum);
+                const blockBefore = web3.eth.getBlock($scope.blockNum - 1);
+                const blockTime = blockNewest.timestamp - blockBefore.timestamp;
+                $scope.hashrate = (blockNewest.difficulty / blockTime);
+            }
         }
 
         function getETHRates() {
