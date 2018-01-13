@@ -213,16 +213,22 @@ angular.module('ethExplorer')
     });
 
 
-function transformer(FORMAT, value, onZero, digitsNumber = 3) {
+/*
+ * This function takes an array that contains objects of type
+ * FORMAT {val: <number>, id: <string>, digit: <number>}, 
+ * the value to represent (e.g. difficulty, block size, etc.) 
+ * and returns the value with the better suited scale and format string.
+ */
+function transformer(FORMAT, value) {
 
     for (let i = 0; i < FORMAT.length; i++) {
         format = FORMAT[i];
         if (value > format.val) {
             var n = value / format.val;
-            return n.toFixed(digitsNumber) + format.id;
+            return n.toFixed(format.digit) + " " + format.id;
         }
     }
-    return 0 + onZero;
+    return 0 + " " + FORMAT[FORMAT.length-1].id;
 }
 
 angular.module('filters', []).
@@ -245,14 +251,14 @@ filter('diffFormat', function() {
     return function(diffi) {
         if (isNaN(diffi)) return diffi;
         const FORMAT = [
-            {val: 1000000000000000, id: " P"},
-            {val: 1000000000000, id: " T"},
-            {val: 1000000000, id: " G"},
-            {val: 1000000, id: " M"},
-            {val: 1000, id: " K"},
-            {val: 1, id: " "},
+            {val: 1000000000000000, id: "P", digit: 3},
+            {val: 1000000000000, id: "T", digit: 3},
+            {val: 1000000000, id: "G", digit: 3},
+            {val: 1000000, id: "M", digit: 3},
+            {val: 1000, id: "K", digit: 3},
+            {val: 1, id: " ", digit: 0},
         ];
-        return transformer(FORMAT, diffi, " ");
+        return transformer(FORMAT, diffi);
     };
 }).
 filter('stylize', function() {
@@ -274,14 +280,14 @@ filter('hashFormat', function() {
         if (isNaN(hashr)) return hashr;
         var n = hashr / 1000000000000;
         const FORMAT = [
-            {val: 1000000000000000, id: " PH/s"},
-            {val: 1000000000000, id: " TH/s"},
-            {val: 1000000000, id: " GH/s"},
-            {val: 1000000, id: " MH/s"},
-            {val: 1000, id: " KH/s"},
-            {val: 1, id: " H/s"},
+            {val: 1000000000000000, id: "PH/s", digit: 3},
+            {val: 1000000000000, id: "TH/s", digit: 3},
+            {val: 1000000000, id: "GH/s", digit: 3},
+            {val: 1000000, id: "MH/s", digit: 3},
+            {val: 1000, id: "KH/s", digit: 3},
+            {val: 1, id: "H/s", digit: 0},
         ];
-        return transformer(FORMAT, hashr, " H/s");
+        return transformer(FORMAT, hashr);
     };
 }).
 filter('gasFormat', function() {
@@ -303,9 +309,9 @@ filter('sizeFormat', function() {
     return function(size) {
         if (isNaN(size)) return size;
         const FORMAT = [
-            {val: 1024, id: " kB"},
-            {val: 1, id: " B"},
+            {val: 1024, id: "kB", digit: 3},
+            {val: 1, id: "B", digit: 0},
         ];
-        return transformer(FORMAT, size, " B");
+        return transformer(FORMAT, size);
     };
 });
