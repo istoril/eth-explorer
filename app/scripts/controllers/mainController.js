@@ -72,7 +72,7 @@ angular.module('ethExplorer')
         function updateStats() {
             $scope.blockNum = web3.eth.blockNumber; // now that was easy
 
-            if ($scope.blockNum !== undefined) {
+            if ($scope.blockNum !== undefined && $scope.blockNum >= 1) {
                 const block1 = web3.eth.getBlock(1);
                 // TODO: put the 2 web3.eth.getBlock into the async function below
                 //       easiest to first do with fastInfosCtrl
@@ -98,12 +98,10 @@ angular.module('ethExplorer')
                     $scope.totalDifficulty_formatted = $scope.totalDifficulty.toFormat(0);
 
                     // Gas Limit
-                    $scope.gasLimit = new BigNumber(blockNewest.gasLimit).toFormat(0) + " m/s";
+                    $scope.gasLimit = blockNewest.gasLimit;
 
                     // Time
-                    var newDate = new Date();
-                    newDate.setTime(blockNewest.timestamp * 1000);
-                    $scope.time = newDate.toUTCString();
+                    $scope.time = blockNewest.timestamp;
 
                     $scope.secondsSinceBlock1 = blockNewest.timestamp - block1.timestamp;
                     $scope.daysSinceBlock1 = ($scope.secondsSinceBlock1 / 86400).toFixed(2);
@@ -171,7 +169,7 @@ angular.module('ethExplorer')
          * https://github.com/badmofo/ethereum-mining-calculator/tree/90f4e5aae595a6877f1a26b43c15a7db35149a22
          */
         function getHashrate() {
-            if ($scope.blockNum !== undefined) {
+            if ($scope.blockNum !== undefined && $scope.blockNum >= 0) {
                 const blockNewest = web3.eth.getBlock($scope.blockNum);
                 const blockBefore = web3.eth.getBlock($scope.blockNum - 1);
                 const blockTime = blockNewest.timestamp - blockBefore.timestamp;
@@ -318,5 +316,14 @@ filter('sizeFormat', function() {
             {val: 1, id: "B", digit: 0},
         ];
         return transformer(FORMAT, size);
+    };
+}).
+filter('timestampFormat', function() {
+    return function(timestamp) {
+        if (isNaN(timestamp)) return timestamp;
+        var newDate = new Date();
+        newDate.setTime(timestamp * 1000);
+        return newDate.toUTCString();
+    
     };
 });

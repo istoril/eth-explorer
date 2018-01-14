@@ -5,7 +5,7 @@
     <div id="block" class="blockdiv">
         <div style="padding-bottom:30px;width:100%;text-align:right;clear:both">
           <button class="btn btn-primary">{{conf}}</button>
-          <button class="btn btn-success cb"><span>{{gasUsed}} Gas Used</span></button>
+          <button class="btn btn-success cb"><span>{{ gasUsed | gasFormat }} Gas Used</span></button>
           <a class="btn btn-primary btn-sm" ng-class="{disabled:firstBlock}" href="./#/block/{{blockNumber-1}}">&lt; Prev</a>
           <a class="btn btn-primary btn-sm" ng-class="{disabled: lastBlock}" href="./#/block/{{blockNumber+1}}">Next &gt;</a>
         </div>
@@ -26,7 +26,7 @@
             <tr>
                 <td>Received Time</td>
                 <td>
-                    {{timestamp}}
+                    {{timestamp | timestampFormat}}
                 </td>
             </tr>
             <tr>
@@ -36,7 +36,7 @@
             <tr>
                 <td>Difficulty</td>
                 <td>
-                    {{difficulty}}
+                    {{difficulty | diffFormat}}
                 </td>
             </tr>
             <tr>
@@ -53,11 +53,11 @@
             </tr>
             <tr>
                 <td>Gas Limit</td>
-                <td>{{gasLimit}}</td>
+                <td>{{gasLimit | gasFormat}}</td>
             </tr>
             <tr>
                 <td>Gas Used</td>
-                <td>{{gasUsed}}</td>
+                <td>{{gasUsed | gasFormat}}</td>
             </tr>
             <tr>
                 <td>Uncle Hash</td>

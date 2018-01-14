@@ -15,7 +15,7 @@ angular.module('ethExplorer')
 
                         // TODO: put the 2 web3.eth.getBlock into the async function below
                         //       easiest to first do with fastInfosCtrl
-                        var blockNewest = web3.eth.getBlock($scope.blockNum);
+                        const blockNewest = web3.eth.getBlock($scope.blockNum);
                         const block1 = web3.eth.getBlock(1);
                         if (blockNewest !== undefined) {
 
@@ -37,12 +37,10 @@ angular.module('ethExplorer')
                             $scope.totalDifficulty_formatted = $scope.totalDifficulty.toFormat(0);
 
                             // Gas Limit
-                            $scope.gasLimit = new BigNumber(blockNewest.gasLimit).toFormat(0) + " m/s";
+                            $scope.gasLimit = blockNewest.gasLimit;
 
                             // Time
-                            var newDate = new Date();
-                            newDate.setTime(blockNewest.timestamp * 1000);
-                            $scope.time = newDate.toUTCString();
+                            $scope.time = blockNewest.timestamp;
 
                             $scope.secondsSinceBlock1 = blockNewest.timestamp - block1.timestamp;
                             $scope.daysSinceBlock1 = ($scope.secondsSinceBlock1 / 86400).toFixed(2);

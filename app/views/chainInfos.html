@@ -33,19 +33,19 @@
             </tr>
             <tr>
                 <td>Current Difficulty</td>
-                <td>{{ difficulty_formatted }}</td>
+                <td>{{ difficulty_formatted }} ({{ difficulty | diffFormat }})</td>
             </tr>
             <tr>
                 <td>Total Difficulty</td>
-                <td>{{ totalDifficulty_formatted }}</td>
+                <td>{{ totalDifficulty_formatted}} ( &#126; {{ totalDifficulty | diffFormat}})</td>
             </tr>
             <tr>
                 <td>Gas Limit</td>
-                <td>{{ gasLimit }}</td>
+                <td>{{ gasLimit | gasFormat }}</td>
             </tr>
             <tr>
                 <td>Time</td>
-                <td>{{ time }}</td>
+                <td>{{ time | timestampFormat }}</td>
             </tr>
             <tr>
                 <td>Connected to ETH Network</td>
