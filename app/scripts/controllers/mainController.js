@@ -326,4 +326,26 @@ filter('timestampFormat', function() {
         return newDate.toUTCString();
     
     };
+}).
+filter('percentage', function() {
+    return function(num) {
+        if (isNaN(num)) return num;
+        
+        return "" + (num*100).toFixed(4);
+    
+    };
+}).
+filter('timeElapsedFilter', function() {
+    return function(timeElapsed) { //expressed in seconds
+        if (isNaN(timeElapsed)) return timeElapsed;
+        const FORMAT = [
+            {val: 31536000, id: "years ago", digit: 0},
+            {val: 604800, id: "weeks ago", digit: 0},
+            {val: 86400, id: "days ago", digit: 0},
+            {val: 3600, id: "hours ago", digit: 0},
+            {val: 60, id: "minutes ago", digit: 0},
+            {val: 1, id: "seconds ago", digit: 0},
+        ];
+        return transformer(FORMAT, timeElapsed);
+    };
 });

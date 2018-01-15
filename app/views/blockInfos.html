@@ -26,7 +26,7 @@
             <tr>
                 <td>Received Time</td>
                 <td>
-                    {{timestamp | timestampFormat}}
+                    {{ timeElapsed | timeElapsedFilter }} ({{timestamp | timestampFormat}})
                 </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td>Gas Used</td>
-                <td>{{gasUsed | gasFormat}}</td>
+                <td>{{gasUsed | gasFormat}} ({{ percentageGasUsed | percentage}} %)</td>
             </tr>
             <tr>
                 <td>Uncle Hash</td>

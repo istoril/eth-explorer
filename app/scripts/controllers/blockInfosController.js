@@ -39,6 +39,7 @@ angular.module('ethExplorer')
                         $scope.difficulty = ("" +  result.difficulty).replace(/['"]+/g, '');
                         $scope.gasLimit = result.gasLimit;
                         $scope.gasUsed = result.gasUsed;
+                        $scope.percentageGasUsed = ($scope.gasUsed / $scope.gasLimit);
                         $scope.nonce = result.nonce;
                         $scope.number = result.number;
                         $scope.parentHash = result.parentHash;
@@ -51,6 +52,10 @@ angular.module('ethExplorer')
                         $scope.size = result.size;
                         $scope.firstBlock = false;
                         $scope.lastBlock = false;
+                        //Expressed in seconds
+                        const now = Math.floor(new Date().getTime()/1000);
+                        $scope.timeElapsed = now - $scope.timestamp;
+                        
                         if ($scope.blockNumber !== undefined) {
                             $scope.conf = number - $scope.blockNumber + " Confirmations";
                             if (number === $scope.blockNumber) {
@@ -59,15 +64,6 @@ angular.module('ethExplorer')
                             }
                             if ($scope.blockNumber === 0) {
                                 $scope.firstBlock = true;
-                            }
-                        }
-
-                        if ($scope.blockNumber !== undefined) {
-                            var info = web3.eth.getBlock($scope.blockNumber);
-                            if (info !== undefined) {
-                                var newDate = new Date();
-                                newDate.setTime(info.timestamp * 1000);
-                                $scope.time = newDate.toUTCString();
                             }
                         }
                     });
